@@ -18,12 +18,17 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//fuzzing/private/oss_fuzz:repository.bzl", "oss_fuzz_repository")
 
-def rules_fuzzing_dependencies(oss_fuzz = True, honggfuzz = True, jazzer = False):
+def rules_fuzzing_dependencies(
+        oss_fuzz = True,
+        honggfuzz = True,
+        centipede = False,
+        jazzer = False):
     """Instantiates the dependencies of the fuzzing rules.
 
     Args:
       oss_fuzz: Include OSS-Fuzz dependencies.
       honggfuzz: Include Honggfuzz dependencies.
+      centipede: Include Centipede dependencies.
       jazzer: Include Jazzer repository. Instantiating all Jazzer dependencies
         additionally requires invoking jazzer_dependencies() in
         @jazzer//:repositories.bzl and jazzer_init() in @jazzer//:init.bzl.
@@ -76,6 +81,25 @@ def rules_fuzzing_dependencies(oss_fuzz = True, honggfuzz = True, jazzer = False
             sha256 = "a6f8040ea62e0f630737f66dce46fb1b86140f118957cb5e3754a764de7a770a",
             url = "https://github.com/google/honggfuzz/archive/e0670137531242d66c9cf8a6dee677c055a8aacb.zip",
             strip_prefix = "honggfuzz-e0670137531242d66c9cf8a6dee677c055a8aacb",
+        )
+
+    if centipede:
+        maybe(
+            http_archive,
+            name = "centipede",
+            sha256 = "e2db6c23b86c91de75dc9903a86e1b365ab86e71c0093e23c66662eb87d41435",
+            url = "https://github.com/google/centipede/archive/7e9dbbfe4bef4cbc6bfe4205a2fb497b508e9bf5.zip",
+            strip_prefix = "centipede-7e9dbbfe4bef4cbc6bfe4205a2fb497b508e9bf5",
+        )
+
+        # TODO(sbucur): This should be provided by Centipede as an initialization library.
+        boringssl_ver = "18637c5f37b87e57ebde0c40fe19c1560ec88813"
+        maybe(
+            http_archive,
+            name = "boringssl",
+            sha256 = "7514826d98f032c16531de9f4c05e7bd05e07545ca39201d1616fa7ba3deadbc",
+            strip_prefix = "boringssl-%s" % boringssl_ver,
+            url = "https://github.com/google/boringssl/archive/%s.tar.gz" % boringssl_ver,
         )
 
     if jazzer:

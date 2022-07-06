@@ -13,8 +13,9 @@
 # limitations under the License.
 
 # Force the use of Clang for all builds.
-build --action_env=CC=clang-10
-build --action_env=CXX=clang++-10
+build --action_env=CC=/usr/local/google/home/sbucur/oss-work/llvm-project-14.0.6.bin/bin/clang
+build --action_env=CXX=/usr/local/google/home/sbucur/oss-work/llvm-project-14.0.6.bin/bin/clang++
+build:centipede --//fuzzing/engines:llvm_symbolizer=/usr/local/google/home/sbucur/oss-work/llvm-project-14.0.6.bin/bin/llvm-symbolizer
 
 # Strict dependency check for C++ includes.
 build --features=layering_check
@@ -57,6 +58,12 @@ build:msan-honggfuzz --@rules_fuzzing//fuzzing:cc_engine_sanitizer=msan
 build:ubsan-honggfuzz --//fuzzing:cc_engine=//fuzzing/engines:honggfuzz
 build:ubsan-honggfuzz --@rules_fuzzing//fuzzing:cc_engine_instrumentation=honggfuzz
 build:ubsan-honggfuzz --@rules_fuzzing//fuzzing:cc_engine_sanitizer=ubsan
+
+# Centipede
+build:centipede --//fuzzing:cc_engine=//fuzzing/engines:centipede
+build:centipede --@rules_fuzzing//fuzzing:cc_engine_instrumentation=centipede
+build:centipede --@rules_fuzzing//fuzzing:cc_engine_sanitizer=none
+build:centipede --cxxopt=-std=c++17
 
 # Replay + ASAN
 build:asan-replay --//fuzzing:cc_engine=//fuzzing/engines:replay
