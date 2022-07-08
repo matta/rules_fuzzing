@@ -87,9 +87,9 @@ def rules_fuzzing_dependencies(
         maybe(
             http_archive,
             name = "centipede",
-            sha256 = "e2db6c23b86c91de75dc9903a86e1b365ab86e71c0093e23c66662eb87d41435",
-            url = "https://github.com/google/centipede/archive/7e9dbbfe4bef4cbc6bfe4205a2fb497b508e9bf5.zip",
-            strip_prefix = "centipede-7e9dbbfe4bef4cbc6bfe4205a2fb497b508e9bf5",
+            sha256 = "a161efc9b647b2d667313da884d3a1852ea13a5ce658b33efd690d316724f017",
+            url = "https://github.com/google/centipede/archive/006944f7a738532e3f592e273f2ba777b2ef105b.zip",
+            strip_prefix = "centipede-006944f7a738532e3f592e273f2ba777b2ef105b",
         )
 
         # TODO(sbucur): This should be provided by Centipede as an initialization library.
